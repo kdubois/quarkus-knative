@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloquarkus
+  labels:
+    app: helloquarkus
+spec:
+  ports:
+    - name: http
+      port: 8080
+  selector:
+    app: helloquarkus
+  type: LoadBalancer
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: helloquarkus
+  namespace: serverless
+  selfLink: /apis/route.openshift.io/v1/namespaces/serverless/routes/helloquarkus
+  uid: 0d8d4df3-180f-11ea-855d-0a580a8000cf
+  resourceVersion: '139189'
+  creationTimestamp: '2019-12-06T09:59:11Z'
+  labels:
+    app: helloquarkus
+  annotations:
+    openshift.io/host.generated: 'true'
+spec:
+  host: helloquarkus-serverless.apps-crc.testing
+  subdomain: ''
+  to:
+    kind: Service
+    name: helloquarkus
+    weight: 100
+  port:
+    targetPort: http
+  wildcardPolicy: None

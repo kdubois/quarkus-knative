@@ -1,0 +1,27 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: helloquarkusknative
+spec:
+  runLatest:
+    configuration:
+      revisionTemplate:
+        metadata:
+          annotations:
+            autoscaling.knative.dev/target: "10"
+        spec:
+          container:
+            image: quay.io/kevindubois/quarked:1.0.0
+            resources:
+              requests:
+                memory: "60Mi"
+                cpu: "50m"
+              limits:
+                memory: "60Mi"
+                cpu: "50m"
+            livenessProbe:
+              httpGet:
+                path: /healthz
+            readinessProbe:
+              httpGet:
+                path: /healthz

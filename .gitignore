@@ -1,0 +1,10 @@
+.DS_Store
+target
+.classpath
+.project
+.settings
+.vscode
+.editorconfig
+bin
+obj
+out

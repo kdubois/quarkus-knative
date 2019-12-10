@@ -1,2 +1,66 @@
 # quarkus-knative
-Demo project showing rapid pod autoscaling of a minimal Quarkus based app in Openshift using Knative.  Based on Burr Sutter's sidebyside demo
+This demo shows how you can develop a Quarkus application and how to leverage Openshift Serverless (Knative) to rapidly scale 
+ the application from 0 when there's a burst of requests.  Based on Burr Sutter's sidebyside demo.
+
+### Requirements
+
+* Linux (or Mac if you must :) )
+* [GraalVM CE](https://www.graalvm.org/) for Quarkus native complication.
+* [siege](https://linux.die.net/man/1/siege) for the (kn)burst.sh scripts. eg. on Fedora: `dnf install siege`
+* [Apache maven 3.5.3+](https://maven.apache.org/)
+* the [oc](https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_cli/getting-started-cli.html) 
+or [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) cli tools. (they can be used interchangeably in this demo) 
+* An Openshift 4.2+ cluster (it may work on other Kubernetes clusters as well?)
+
+### Local development
+
+You can run the sample application with the following maven command.  
+This will start a local runtime with virtually instantaneous hot reload of the application while you're making changes. 
+
+Compile and run the app in dev mode: `mvn compile quarkus:dev`
+
+And see your changes on the fly with eg. `curl localhost:8080` or `./localpoller.sh`
+
+`ctrl-c ` when you're done
+
+### Build project
+
+* `mvn clean package -Pnative`, or to build it in a quarkus container: `./buildNativeLinux.sh` | `./buildNativeMac.sh`
+
+### Create Container Image
+ 
+`./dockerbuild.sh`
+
+### Optionally Push Image with Quay (update with your repository name)
+
+`./dockerpush_quay.sh`
+
+### Install the Openshift Serverless Operator
+
+Go to the operatorhub in your Openshift cluster, and find the Openshift Serverless Operator, and install it. 
+Wait for the install to finish (the Operator will also install Service Mesh since it has a dependency on it), then apply the following file:
+`kubectl apply -f serving.yml -f ConfigMap.yml` which will configure a knative instance.  
+
+### Deploy to Openshift
+
+Deploy Knative service: `kubectl apply -f kubefiles/knService_quay.yml`
+
+You can optionally also do a regular deployment (non-knative) and compare with the Knative service:
+ `kubectl apply -f kubefiles/Deployment_quay.yml`
+ You'll also have to expose the service in this case: `kubectl apply -f kubefiles/Service.yml`
+
+### Start the siege!
+
+You can either just do one request at a time with the `./knpoller.sh` (boring)
+
+Or you can launch a bunch of concurrent requests and really see the pods scale: `./knburst.sh`
+
+If you want to compare with the non-knative deployment, use poller.sh and burst.sh
+
+### Troubleshooting
+If you're seeing requests bounce or error out, your nodes may not be able to handle the pressure from the siege command.  
+Try adjusting the siege parameters in the knburst.sh file; or configure knative's concurrency differently.
+
+
+
+
