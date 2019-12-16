@@ -29,7 +29,7 @@ And see your changes on the fly with eg. `curl localhost:8080` or `./localpoller
 
 ### Create Container Image
  
-`./dockerbuild.sh`
+`docker build -f kubefiles/Dockerfile -t dev.local/kevindubois/quarked:1.0.0 .`
 
 ### Optionally Push Image with Quay (update with your repository name)
 
@@ -39,7 +39,7 @@ And see your changes on the fly with eg. `curl localhost:8080` or `./localpoller
 
 Go to the operatorhub in your Openshift cluster, and find the Openshift Serverless Operator, and install it. 
 Wait for the install to finish (the Operator will also install Service Mesh since it has a dependency on it), then apply the following file:
-`kubectl apply -f serving.yml -f ConfigMap.yml` which will configure a knative instance.  
+`kubectl apply -f kubefiles/serving.yml -f kubefiles/ConfigMap.yml` which will configure a knative instance.  
 
 ### Deploy to Openshift
 
