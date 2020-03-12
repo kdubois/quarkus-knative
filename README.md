@@ -31,9 +31,15 @@ And see your changes on the fly with eg. `curl localhost:8080` or `./localpoller
  
 `docker build -f kubefiles/Dockerfile -t dev.local/kevindubois/quarked:1.0.0 .`
 
-### Optionally Push Image with Quay (update with your repository name)
+### Optionally Push Image to Quay (update with your repository name)
 
-`./dockerpush_quay.sh`
+#docker login quay.io
+#
+#docker tag "$1" quay.io/kevindubois/quarked:1.0.0
+#
+#docker push quay.io/kevindubois/quarked:1.0.0
+
+podman push "$1" docker://quay.io/kevindubois/quarked:1.0.0
 
 ### Install the Openshift Serverless Operator
 
@@ -42,7 +48,7 @@ Wait for the install to finish (the Operator will also install Service Mesh sinc
 `kubectl apply -f kubefiles/serving.yml -f kubefiles/ConfigMap.yml` which will configure a knative instance.  
 
 ### Deploy to Openshift
-
+Create a project if you haven't already, and then 
 Deploy Knative service: `kubectl apply -f kubefiles/knService_quay.yml`
 
 You can optionally also do a regular deployment (non-knative) and compare with the Knative service:

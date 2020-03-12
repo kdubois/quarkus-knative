@@ -1,7 +1,7 @@
 apiVersion: serving.knative.dev/v1alpha1
 kind: Service
 metadata:
-  name: helloquarkusknative
+  name: serverlessdemo
 spec:
   runLatest:
     configuration:
@@ -19,9 +19,6 @@ spec:
               limits:
                 memory: "55Mi"
                 cpu: "50m"
-            livenessProbe:
-              httpGet:
-                path: /healthz
             readinessProbe:
               httpGet:
                 path: /healthz
