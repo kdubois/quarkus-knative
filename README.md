@@ -67,6 +67,9 @@ If you want to compare with the non-knative deployment, use poller.sh and burst.
 If you're seeing requests bounce or error out, your nodes may not be able to handle the pressure from the siege command.  
 Try adjusting the siege parameters in the knburst.sh file; or configure knative's concurrency differently.
 
+### Health / readiness / liveness checks
+If you examined the pom.xml, you may have noticed the smallrye-health dependency.  Thanks to this, we have access to an automatic health api (check out the /q and /q/health endpoints)
+
 
 
 
