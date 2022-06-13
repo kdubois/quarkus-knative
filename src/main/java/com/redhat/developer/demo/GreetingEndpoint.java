@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 @Path("/") 
 public class GreetingEndpoint {
     
-    private String prefix = "<h1>Hi Everyone!!</h1>";
+    private String prefix = "<h1>Quarkus Roxx!!</h1>";
     
     private String HOSTNAME =
        System.getenv().getOrDefault("HOSTNAME", "unknown");
@@ -19,7 +19,7 @@ public class GreetingEndpoint {
     private int count = 0;
 
     @GET    
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_HTML)
     public String greet() {
         count++;
         return prefix + " " + HOSTNAME + ":" + count + "\n";
