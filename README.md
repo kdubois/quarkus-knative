@@ -5,12 +5,13 @@ This demo shows how you can develop a Quarkus application and how to leverage Op
 ### Requirements
 
 * Linux (or Mac if you must :) )
-* [GraalVM CE](https://www.graalvm.org/) for Quarkus native complication.
 * [siege](https://linux.die.net/man/1/siege) for the (kn)burst.sh scripts. eg. on Fedora: `dnf install siege`
+* Java 11/17
 * [Apache maven 3.5.3+](https://maven.apache.org/)
 * the [oc](https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_cli/getting-started-cli.html) 
 or [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) cli tools. (they can be used interchangeably in this demo) 
 * An Openshift 4.2+ cluster (it may work on other Kubernetes clusters as well?)
+* (OPTIONAL) [GraalVM CE](https://www.graalvm.org/) or [Mandrel](https://github.com/graalvm/mandrel)
 
 ### Local development
 
@@ -25,7 +26,7 @@ And see your changes on the fly with eg. `curl localhost:8080` or `./localpoller
 
 ### Build project
 
-* `mvn clean package -Pnative`, or to build it in a quarkus container: `./buildNativeLinux.sh` | `./buildNativeMac.sh`
+* `mvn clean package -Pnative`, or if you don't have GraalVM/Mandrel installed locally, you can build it in a container (make sure you have podman or docker installed): `./buildNativeLinux.sh` | `./buildNativeMac.sh`
 
 ### Create Container Image
  

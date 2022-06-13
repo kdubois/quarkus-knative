@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 @Path("/") 
 public class GreetingEndpoint {
     
-    private String prefix = "Hi Everyone!!";
+    private String prefix = "<h1>Hi Everyone!!</h1>";
     
     private String HOSTNAME =
        System.getenv().getOrDefault("HOSTNAME", "unknown");
