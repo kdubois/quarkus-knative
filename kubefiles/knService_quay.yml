@@ -1,24 +1,46 @@
-apiVersion: serving.knative.dev/v1alpha1
+apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
+  annotations:
+    app.openshift.io/route-disabled: 'false'
+    image.openshift.io/triggers: >-
+      [{"from":{"kind":"ImageStreamTag","name":"quarked:latest","namespace":"quarked"},"fieldPath":"spec.template.spec.containers[?(@.name==\"quarked\")].image","pause":"false"}]
   name: quarked
+  namespace: quarked
+  labels:
+    app.kubernetes.io/component: quarked
+    app.kubernetes.io/instance: quarked
+    app.kubernetes.io/name: quarked
+    app.kubernetes.io/part-of: quarked-app
+    app.openshift.io/runtime: quarkus
+    app.openshift.io/runtime-namespace: quarked
+    app.openshift.io/runtime-version: latest
 spec:
-  runLatest:
-    configuration:
-      revisionTemplate:
-        metadata:
-          annotations:
-            autoscaling.knative.dev/target: "10"
-        spec:
-          container:
-            image: quay.io/kevindubois/quarked:1.0.0
-            resources:
-              requests:
-                memory: "55Mi"
-                cpu: "50m"
-              limits:
-                memory: "55Mi"
-                cpu: "50m"
-            readinessProbe:
-              httpGet:
-                path: /healthz
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: '250'
+        autoscaling.knative.dev/target: '1'
+        autoscaling.knative.dev/targetUtilizationPercentage: '70'
+        autoscaling.knative.dev/window: 30s
+      labels:
+        app.kubernetes.io/component: quarked
+        app.kubernetes.io/instance: quarked
+        app.kubernetes.io/part-of: quarked-app
+        app.openshift.io/runtime: quarkus
+        app.openshift.io/runtime-namespace: quarked
+        app.openshift.io/runtime-version: latest
+    spec:
+      containerConcurrency: 1
+      containers:        
+        - image: >-
+            image-registry.openshift-image-registry.svc:5000/quarked/quarked:voxxed
+          imagePullPolicy: IfNotPresent
+          name: quarked
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          readinessProbe:
+            successThreshold: 1            
+            httpGet:
+              path: /healthz

@@ -8,3 +8,5 @@ target
 bin
 obj
 out
+/home/kdubois/workspace/kdubois/quarkus-knative/.odo/env
+.odo/odo-file-index.json

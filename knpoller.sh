@@ -1,6 +1,6 @@
 #!/bin/bash
 
-KSVC_URL="$(kubectl -n serverless get ksvc helloquarkusknative -o jsonpath='{.status.url}')"
+KSVC_URL="$(kubectl -n serverless get ksvc quarked -o jsonpath='{.status.url}')"
 
 while true; do
   curl $KSVC_URL

@@ -1,0 +1,21 @@
+FROM fedora:36
+RUN dnf -y install siege && dnf -y autoremove && mkdir ~/.siege && chown -R 1000 ~/.siege
+
+# URL TO SEND REQUESTS TO
+ARG KSVC_URL quarked
+
+# How many times do we want to repeat the siege
+ENV REPETITIONS 1
+
+# How many concurrent users do we want spawn
+ENV CONCURRENCY 250
+
+# What delay between sieges
+ENV DELAY 1
+
+USER 1000
+ 
+COPY siege.conf ~/.siege/siege.conf
+
+
+CMD ["sh", "-c", "siege -r 1 -c 250 -d 1 -v $KSVC_URL"]

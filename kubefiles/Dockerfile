@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/ubi-minimal
+FROM registry.access.redhat.com/ubi8-minimal:8.5-204
 WORKDIR /work/
 COPY target/quarked-1.0.0-runner /work/quarked-1.0.0-runner
 RUN chmod 775 /work

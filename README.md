@@ -24,13 +24,17 @@ And see your changes on the fly with eg. `curl localhost:8080` or `./localpoller
 
 `ctrl-c ` when you're done
 
-### Build project
+### Build project as native executable
 
-* `mvn clean package -Pnative`, or if you don't have GraalVM/Mandrel installed locally, you can build it in a container (make sure you have podman or docker installed): `./buildNativeLinux.sh` | `./buildNativeMac.sh`
+* `mvn clean package -Pnative` (if you don't have GraalVM/Mandrel installed locally, Quarkus will pull down a builder image and run the native build in a container.  Awesome, right? :D )
+
+### Build project as fat-jar
+
+* You can also just build this app as a deployable uber jar.  Just remove the -Pnative parameter.  (this is handy if you want to deploy the app directly from source into Openshift with eg. s2i / oc new-app )
 
 ### Create Container Image
- 
-`docker build -f kubefiles/Dockerfile -t dev.local/kevindubois/quarked:1.0.0 .`
+
+`docker build -f kubefiles/Dockerfile -t quay.io/kevindubois/quarked:1.0.0 .`
 
 ### Optionally Push Image to Quay (update with your repository name)
 
@@ -44,13 +48,13 @@ podman push "$1" docker://quay.io/kevindubois/quarked:1.0.0
 
 ### Install the Openshift Serverless Operator
 
-Go to the operatorhub in your Openshift cluster, and find the Openshift Serverless Operator, and install it. 
-Wait for the install to finish (the Operator will also install Service Mesh since it has a dependency on it), then apply the following file:
-`kubectl apply -f kubefiles/serving.yml -f kubefiles/ConfigMap.yml` which will configure a knative instance.  
+Go to the operatorhub in your Openshift cluster, and find the Openshift Serverless Operator, and install it.
+Wait for the install to finish, then create a Knative Serving instance in the knative-serving namespace (which the operator should have created)
+Optionally you can apply the following configmap if you want to set some aggressive defaults for your knative config:
+`kubectl apply -f kubefiles/ConfigMap.yml -n knative-serving` 
 
 ### Deploy to Openshift
-Create a project if you haven't already, and then 
-Deploy Knative service: `kubectl apply -f kubefiles/knService_quay.yml`
+Create a project if you haven't already, and then deploy Knative service: `kubectl apply -f kubefiles/knService_quay.yml`
 
 You can optionally also do a regular deployment (non-knative) and compare with the Knative service:
  `kubectl apply -f kubefiles/Deployment_quay.yml`
@@ -65,12 +69,8 @@ Or you can launch a bunch of concurrent requests and really see the pods scale: 
 If you want to compare with the non-knative deployment, use poller.sh and burst.sh
 
 ### Troubleshooting
-If you're seeing requests bounce or error out, your nodes may not be able to handle the pressure from the siege command.  
+If you're seeing requests bounce or error out, your nodes may not be able to handle the pressure from the siege command  
 Try adjusting the siege parameters in the knburst.sh file; or configure knative's concurrency differently.
 
 ### Health / readiness / liveness checks
 If you examined the pom.xml, you may have noticed the smallrye-health dependency.  Thanks to this, we have access to an automatic health api (check out the /q and /q/health endpoints)
-
-
-
-

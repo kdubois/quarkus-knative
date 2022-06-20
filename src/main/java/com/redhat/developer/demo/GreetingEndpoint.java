@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 @Path("/") 
 public class GreetingEndpoint {
     
-    private String prefix = "<h1>Quarkus Roxx!!</h1>";
+    private String prefix = "<h1 style='font-size:100px; text-align:center; padding-top:100px'>Hello Voxxed Days Luxembourg!!</h1>";
     
     private String HOSTNAME =
        System.getenv().getOrDefault("HOSTNAME", "unknown");
@@ -32,8 +32,8 @@ public class GreetingEndpoint {
          int cores = Runtime.getRuntime().availableProcessors();
          System.out.println("/myresources " + HOSTNAME);
          return 
-             " Memory: " + (memory / 1024 / 1024) +
-             " Cores: " + cores + "\n";
+             " Memory: " + (memory / 1024 / 1024) + "MB" +
+             " Cores: " + cores + "CPU\n";
     }
     
     @GET

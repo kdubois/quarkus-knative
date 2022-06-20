@@ -4,13 +4,13 @@ metadata:
   name: config-autoscaler
   namespace: knative-serving
 data:
-  container-concurrency-target-default: "2"
-  container-concurrency-target-percentage: "1.0"
+  container-concurrency-target-default: "1"
+  container-concurrency-target-percentage: "50"
   enable-scale-to-zero: "true"
   enable-vertical-pod-autoscaling: "true"
-  max-scale-up-rate: "10"
+  max-scale-up-rate: "120"
   panic-window: 6s
   scale-to-zero-grace-period: 30s
   stable-window: 30s
   tick-interval: 2s
-  requests-per-second-target-default: "50"
+  requests-per-second-target-default: "2"
