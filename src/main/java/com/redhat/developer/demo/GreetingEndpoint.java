@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 @Path("/") 
 public class GreetingEndpoint {
     
-    private String prefix = "<h1 style='font-size:100px; text-align:center; padding-top:100px'>Hello Voxxed Days Luxembourg!!</h1>";
+    private String prefix = "<h1 style='font-size:100px; text-align:center; padding-top:100px'>Hello!!</h1>";
     
     private String HOSTNAME =
        System.getenv().getOrDefault("HOSTNAME", "unknown");
