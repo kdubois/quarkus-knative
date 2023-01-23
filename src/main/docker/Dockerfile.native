@@ -1,0 +1,11 @@
+FROM registry.access.redhat.com/ubi9-minimal
+WORKDIR /work/
+RUN chown 1001 /work \
+    && chmod "g+rwX" /work \
+    && chown 1001:root /work
+COPY --chown=1001:root target/*-runner /work/application
+
+EXPOSE 8080
+USER 1001
+# CMD [ "./quarked-1.0.0-runner", "-Xmx7m", "-Xmn7m", "-Xms7m" ]
+CMD [ "./quarked-1.0.0-runner", "-Dquarkus.http.host=0.0.0.0",  "-Xmx12m", "-Xmn12m", "-Xms12m", "-Dquarkus.http.io-threads=2", "-Dquarkus.http.worker-threads=2" ]
