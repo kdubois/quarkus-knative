@@ -1,0 +1,36 @@
+# Generated with JReleaser 1.5.1 at 2023-04-27T14:28:01.667267751+02:00
+project:
+  name: quarkus-knative
+  version: 1.0.0-SNAPSHOT
+  description: Quarkus Knative Demo App
+  longDescription: Demo App demonstrating using Quarkus with Knative
+  authors:
+    - Kevin Dubois
+  license: Apache-2.0
+  links:
+    homepage: https://github.com/kdubois/quarkus-knative
+  java:
+    groupId: com.redhat.developer.demo
+    version: 17
+    artifactId: quarked
+  inceptionYear: 2023
+
+release:
+  github:
+    overwrite: true
+    changelog:
+      formatted: ALWAYS
+      preset: conventional-commits
+      contributors:
+        format: '- {{contributorName}}{{#contributorUsernameAsLink}} ({{.}}){{/contributorUsernameAsLink}}'
+
+assemble:
+  javaArchive:
+    quarked:
+      active: ALWAYS
+      formats: [ ZIP ]
+      fileSets:
+        - input: '.'
+          includes: [ 'LICENSE' ]
+      mainJar:
+        path: target/{{distributionName}}-{{projectVersion}}-runner.jar
