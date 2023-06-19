@@ -2,45 +2,62 @@ apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
   annotations:
-    app.openshift.io/route-disabled: 'false'
-    image.openshift.io/triggers: >-
-      [{"from":{"kind":"ImageStreamTag","name":"quarked:latest","namespace":"quarked"},"fieldPath":"spec.template.spec.containers[?(@.name==\"quarked\")].image","pause":"false"}]
-  name: quarked
-  namespace: quarked
+    prometheus.io/port: '8080'
+    prometheus.io/path: /q/metrics
+    prometheus.io/scheme: http
+    prometheus.io/scrape: 'true'
+  name: quarked     
+  namespace: kevin-dubois-dev
   labels:
     app.kubernetes.io/component: quarked
     app.kubernetes.io/instance: quarked
     app.kubernetes.io/name: quarked
-    app.kubernetes.io/part-of: quarked-app
+    app.kubernetes.io/version: latest
     app.openshift.io/runtime: quarkus
-    app.openshift.io/runtime-namespace: quarked
     app.openshift.io/runtime-version: latest
 spec:
   template:
     metadata:
       annotations:
-        autoscaling.knative.dev/maxScale: '250'
         autoscaling.knative.dev/target: '1'
-        autoscaling.knative.dev/targetUtilizationPercentage: '70'
-        autoscaling.knative.dev/window: 30s
+        autoscaling.knative.dev/window: 20s
+      creationTimestamp: null
       labels:
         app.kubernetes.io/component: quarked
         app.kubernetes.io/instance: quarked
-        app.kubernetes.io/part-of: quarked-app
+        app.kubernetes.io/name: quarked
+        app.kubernetes.io/version: latest
         app.openshift.io/runtime: quarkus
-        app.openshift.io/runtime-namespace: quarked
         app.openshift.io/runtime-version: latest
     spec:
       containerConcurrency: 1
-      containers:        
-        - image: >-
-            image-registry.openshift-image-registry.svc:5000/quarked/quarked:voxxed
+      containers:
+        - image: quay.io/kevindubois/quarked:latest
           imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /q/health/live
+              port: 0
+              scheme: HTTP
+            initialDelaySeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
           name: quarked
           ports:
             - containerPort: 8080
               protocol: TCP
           readinessProbe:
-            successThreshold: 1            
+            failureThreshold: 3
             httpGet:
-              path: /healthz
+              path: /q/health/ready
+              port: 0
+              scheme: HTTP
+            initialDelaySeconds: 1
+            periodSeconds: 1
+            successThreshold: 1
+            timeoutSeconds: 10
+  traffic:
+    - latestRevision: true
+      percent: 100

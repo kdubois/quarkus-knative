@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.redhat.developer.demo</groupId>
   <artifactId>quarked</artifactId>
   <version>1.0.0-SNAPSHOT</version>
+  <developers>
+    <developer>
+      <id>kdubois</id>
+      <name>Kevin Dubois</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://github.com/kdubois/quarkus-knative.git</connection>
+    <developerConnection>scm:git:https://github.com/kdubois/quarkus-knative.git</developerConnection>
+    <url>https://github.com/kdubois/quarkus-knative.git</url>
+  </scm>
   <properties>
     <compiler-plugin.version>3.10.1</compiler-plugin.version>
     <maven.compiler.release>17</maven.compiler.release>
@@ -14,7 +23,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-    <quarkus.platform.version>3.1.1.Final</quarkus.platform.version>
+    <quarkus.platform.version>3.1.2.Final</quarkus.platform.version>
     <skipITs>true</skipITs>
     <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
   </properties>
@@ -48,6 +57,10 @@
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-kubernetes</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
       <artifactId>quarkus-junit5</artifactId>
       <scope>test</scope>
     </dependency>
@@ -57,19 +70,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <developers>
-      <developer>
-          <id>kdubois</id>
-          <name>Kevin Dubois</name>
-      </developer>
-  </developers>
-  <scm>
-    <connection>scm:git:https://github.com/kdubois/quarkus-knative.git</connection>
-    <developerConnection>scm:git:https://github.com/kdubois/quarkus-knative.git</developerConnection>
-    <url>https://github.com/kdubois/quarkus-knative.git</url>
-    <tag>HEAD</tag>
-  </scm>
-
   <build>
     <plugins>
       <plugin>

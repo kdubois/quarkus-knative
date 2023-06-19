@@ -10,11 +10,11 @@
 #
 # Then, build the image with:
 #
-# docker build -f src/main/docker/Dockerfile.native-micro -t quarkus/test .
+# docker build -f src/main/docker/Dockerfile.native-micro -t quarkus/code-with-quarkus .
 #
 # Then run the container using:
 #
-# docker run -i --rm -p 8080:8080 quarkus/test
+# docker run -i --rm -p 8080:8080 quarkus/code-with-quarkus
 #
 ###
 FROM quay.io/quarkus/quarkus-micro-image:2.0
@@ -27,5 +27,4 @@ COPY --chown=1001:root target/*-runner /work/application
 EXPOSE 8080
 USER 1001
 
-CMD [ "./application", "-Dquarkus.http.host=0.0.0.0",  "-Xmx12m", "-Xmn12m", "-Xms12m", "-Dquarkus.http.io-threads=2", "-Dquarkus.http.worker-threads=2" ]
-
+CMD ["./application", "-Dquarkus.http.host=0.0.0.0"]
