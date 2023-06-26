@@ -1,11 +1,11 @@
 # quarkus-knative
 
 This demo shows how you can develop a Quarkus application and how to leverage Openshift Serverless (Knative) to rapidly scale
- the application from 0 when there's a burst of requests.  Based on Burr Sutter's sidebyside demo.
+ the application from 0 when there's a burst of requests. 
 
 ## Requirements
 
-* Linux (or Mac if you must :) )
+* Linux (or Mac if you must :) ).  Windows will work as well but you'll need to use a different tool to burst requests. Eg. Jmeter should work.
 * [siege](https://linux.die.net/man/1/siege) for the (kn)burst.sh scripts. eg. on Fedora: `dnf install siege`
 * Java 11/17
 * [Apache maven 3.5.3+](https://maven.apache.org/)
