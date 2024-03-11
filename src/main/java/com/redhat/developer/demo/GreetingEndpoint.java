@@ -1,10 +1,8 @@
 package com.redhat.developer.demo;
 
 
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
+import jakarta.ws.rs.*;
 
-import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 
@@ -54,6 +52,25 @@ public class GreetingEndpoint {
             + humanReadableByteCount(maxMemory, false) + ")";
         System.out.println(msg);
         return msg + "\n";
+    }
+
+    @GET
+    @Path("/spin")
+    public String spinSome(@QueryParam("ms") @DefaultValue("5000") int ms) {
+        long sleepTime = ms*1000000L; // convert to nanoseconds
+        long startTime = System.nanoTime();
+        long iterations = 1;
+        StringBuilder sb = new StringBuilder();
+        while ((System.nanoTime() - startTime) < sleepTime) {
+            iterations++;
+            iterations = iterations * iterations;
+            sb.append(System.nanoTime());
+        }
+        Runtime rt = Runtime.getRuntime();
+        long maxMemory = rt.maxMemory();
+        long usedMemory = rt.totalMemory();
+
+        return "Spun for " + ms + " milliseconds. Used " + ((float) usedMemory / maxMemory)*100 + "% of memory";
     }
 
    public static String humanReadableByteCount(long bytes, boolean si) {

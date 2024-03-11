@@ -144,4 +144,8 @@
     <orderEntry type="library" scope="TEST" name="Maven: javax.xml.bind:jaxb-api:2.3.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.sling:org.apache.sling.javax.activation:0.1.0" level="project" />
   </component>
+  <component name="Quarkus Tools">
+    <option name="hash" value="-1067868110" />
+    <option name="version" value="1" />
+  </component>
 </module>
